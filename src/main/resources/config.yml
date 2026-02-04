@@ -1,0 +1,22 @@
+# PolyCore - a simple Java Tetris Server
+# created by JoshiCodes aka Joroshi
+# https://github.com/JoshiCodes/PolyCore
+
+config-version: 1
+
+application:
+  host: 0.0.0.0   # 0.0.0.0 for all interfaces
+  port: 3091
+
+game:
+  administrator:
+    first-join: true  # If set to true, the first player to join will be given administrator privileges
+    server-command: true  # If set to true, you can use /op in the server console (or as administrator) to give out administrator privileges
+  lobby-size: 10
+  max-players: 4
+  tick-rate: 10
+  use-password: false   # If set to true, players will need to enter a password to join
+  default-password: 'polycore'  # Can be changed ingame by /password
+
+# WIP - does not work yet
+plugins:
