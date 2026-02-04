@@ -41,10 +41,12 @@ public abstract class Command {
         return isAdmin;
     }
 
+    /**
+     * Executes the command.
+     * @param sender the sender of the command
+     * @param args the arguments of the command, args[0] is always the label (name) used
+     * @return true if the command was executed successfully, false otherwise
+     */
     public abstract boolean execute(CommandSender sender, String[] args); // args[0] is always the label
-
-    public CommandManager.ExecutionResult successResult() {
-        return CommandManager.ExecutionResult.SUCCESS;
-    }
 
 }

@@ -1,6 +1,7 @@
 package de.joshicodes.polycore;
 
 import de.joshicodes.polycore.commands.StopCommand;
+import de.joshicodes.polycore.game.GameEndpoint;
 import de.joshicodes.polycore.util.commands.CommandManager;
 import de.joshicodes.polycore.commands.HelpCommand;
 import de.joshicodes.polycore.util.commands.ConsoleSender;
@@ -28,6 +29,7 @@ public class PolyCore {
     private final YamlDocument config;
     private final Server server;
 
+    private final Thread commandThread;
     private final CommandManager commandManager;
 
     private final ConsoleSender consoleSender = new ConsoleSender();
@@ -47,8 +49,9 @@ public class PolyCore {
         server = new Server(
                 host,
                 port,
-                "/game",
-                null
+                "/tetris",
+                null,
+                GameEndpoint.class
         );
 
         commandManager = new CommandManager(this);
@@ -83,24 +86,35 @@ public class PolyCore {
             consoleSender.sendMessage(ChatColor.GREEN + "Type \"help\" for help.!");
 
 
-            String line;
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            while(true) {
-                System.out.print("> ");
-                line = br.readLine();
-                System.out.println(line);
-                CommandManager.ExecutionResult result = commandManager.tryExecuteConsoleCommand(this, consoleSender, line);
-                if(result == CommandManager.ExecutionResult.STOP_SERVER) {
-                    // TODO: Graceful shutdown
-                    server.stop();
-                    break;
+            commandThread = new Thread(() -> {
+                String line;
+                BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+                while(true) {
+                    System.out.print("> ");
+                    try {
+                        line = br.readLine();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    commandManager.tryExecuteConsoleCommand(this, consoleSender, line);
                 }
-            }
+            }, "Command-Thread");
+
+            commandThread.start();
 
         } catch (DeploymentException e) {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public void stop() {
+        server.stop();
+        consoleSender.sendMessage(ChatColor.RED + "Web-Server stopped.");
+        commandThread.interrupt();
+        consoleSender.sendMessage(ChatColor.RED + "Command-Thread stopped.");
+        consoleSender.sendMessage(ChatColor.RED + "Shutting down PolyCore...");
+        System.exit(0);
     }
 
     public ConsoleSender getConsoleSender() {

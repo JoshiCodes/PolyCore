@@ -1,5 +1,6 @@
 package de.joshicodes.polycore.commands;
 
+import de.joshicodes.polycore.PolyCore;
 import de.joshicodes.polycore.util.ChatColor;
 import de.joshicodes.polycore.util.commands.Command;
 import de.joshicodes.polycore.util.commands.CommandManager;
@@ -15,12 +16,8 @@ public class StopCommand extends Command {
     public boolean execute(CommandSender sender, String[] args) {
         if(!sender.isAdmin()) return false;
         sender.sendMessage(ChatColor.RED + "Shutting down...");
+        PolyCore.getInstance().stop();
         return true;
-    }
-
-    @Override
-    public CommandManager.ExecutionResult successResult() {
-        return CommandManager.ExecutionResult.STOP_SERVER;
     }
 
 }

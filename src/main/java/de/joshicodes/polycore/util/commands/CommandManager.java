@@ -1,6 +1,7 @@
 package de.joshicodes.polycore.util.commands;
 
 import de.joshicodes.polycore.PolyCore;
+import de.joshicodes.polycore.game.Player;
 import de.joshicodes.polycore.util.ChatColor;
 
 import java.util.ArrayList;
@@ -23,41 +24,43 @@ public class CommandManager {
         return commands;
     }
 
-    public ExecutionResult tryExecuteConsoleCommand(PolyCore polyCore, ConsoleSender sender, String line) {
+    public void tryExecuteConsoleCommand(PolyCore polyCore, ConsoleSender sender, String line) {
         if(line.startsWith("/"))
             line = line.substring(1);
         for(Command command : commands) {
             final String[] args = line.split(" ");
             final String label = args[0];
             if(command.getLabel().equalsIgnoreCase(label) || command.getAliases().stream().anyMatch(label::equalsIgnoreCase)) {
-                boolean success = command.execute(sender, args);
-                if(success) {
-                    return command.successResult();
-                }
-                return ExecutionResult.FAILED;
+                command.execute(sender, args);
+                return;
             }
         }
         sender.sendMessage(ChatColor.RED + "Unknown command. Type \"/help\" for help.");
-        return ExecutionResult.NO_COMMAND;
     }
 
-    public enum ExecutionResult {
-        /**
-         * The command executed successfully.
-         */
+    public CommandResult tryExecutePlayerCommand(final Player player, String line) {
+        if(line.startsWith("/"))
+            line = line.substring(1);
+        for(Command command : commands) {
+            final String[] args = line.split(" ");
+            final String label = args[0];
+            if(command.getLabel().equalsIgnoreCase(label) || command.getAliases().stream().anyMatch(label::equalsIgnoreCase)) {
+                boolean success = command.execute(player, args);
+                if(success) {
+                    return CommandResult.SUCCESS;
+                } else {
+                    return CommandResult.FAILED;
+                }
+            }
+        }
+        return CommandResult.NOT_A_COMMAND;
+    }
+
+    public static enum CommandResult {
         SUCCESS,
-        /**
-         * The command failed to execute.
-         */
         FAILED,
-        /**
-         * No command was found matching the input.
-         */
-        NO_COMMAND,
-        /**
-         * The Command is telling the server to stop.
-         */
-        STOP_SERVER
+        NOT_FOUND,
+        NOT_A_COMMAND
     }
 
 }
