@@ -1,4 +1,4 @@
-package de.joshicodes.polycore.util.packets;
+package de.joshicodes.polycore.util.packet.incoming;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

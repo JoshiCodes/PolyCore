@@ -1,4 +1,4 @@
-package de.joshicodes.polycore.util.packets;
+package de.joshicodes.polycore.util.packet.incoming;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;

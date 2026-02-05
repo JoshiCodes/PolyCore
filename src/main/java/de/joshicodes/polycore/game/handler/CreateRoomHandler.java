@@ -4,8 +4,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import de.joshicodes.polycore.game.GameManager;
 import de.joshicodes.polycore.util.packet.Packet;
-import de.joshicodes.polycore.util.packets.IncomingPacketHandler;
-import de.joshicodes.polycore.util.packets.PacketType;
+import de.joshicodes.polycore.util.packet.incoming.IncomingPacketHandler;
+import de.joshicodes.polycore.util.packet.incoming.PacketType;
 import jakarta.websocket.Session;
 
 @PacketType("CREATE_ROOM")

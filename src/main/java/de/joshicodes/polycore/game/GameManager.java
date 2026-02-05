@@ -1,9 +1,8 @@
 package de.joshicodes.polycore.game;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import de.joshicodes.polycore.util.packet.Packet;
-import de.joshicodes.polycore.util.packets.PacketRegistry;
+import de.joshicodes.polycore.util.packet.incoming.PacketRegistry;
 import jakarta.websocket.CloseReason;
 import jakarta.websocket.Session;
 
