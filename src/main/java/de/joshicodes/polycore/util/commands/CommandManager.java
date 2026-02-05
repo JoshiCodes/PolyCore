@@ -39,17 +39,18 @@ public class CommandManager {
     }
 
     public CommandResult tryExecutePlayerCommand(final Player player, String line) {
-        if(line.startsWith("/"))
+        if(line.startsWith("/")) {
             line = line.substring(1);
-        for(Command command : commands) {
-            final String[] args = line.split(" ");
-            final String label = args[0];
-            if(command.getLabel().equalsIgnoreCase(label) || command.getAliases().stream().anyMatch(label::equalsIgnoreCase)) {
-                boolean success = command.execute(player, args);
-                if(success) {
-                    return CommandResult.SUCCESS;
-                } else {
-                    return CommandResult.FAILED;
+            for(Command command : commands) {
+                final String[] args = line.split(" ");
+                final String label = args[0];
+                if(command.getLabel().equalsIgnoreCase(label) || command.getAliases().stream().anyMatch(label::equalsIgnoreCase)) {
+                    boolean success = command.execute(player, args);
+                    if(success) {
+                        return CommandResult.SUCCESS;
+                    } else {
+                        return CommandResult.FAILED;
+                    }
                 }
             }
         }

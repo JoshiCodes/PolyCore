@@ -33,6 +33,7 @@ public class GameRoom {
         if(players.size() >= maxPlayers) return false;
         if(players.containsKey(player.getSession().getId())) return false;
         players.put(player.getSession().getId(), new PlayerState(player.getSession(), player.getName()));
+        broadcast("JOIN", player.getName());
         return true;
     }
 
@@ -129,10 +130,10 @@ public class GameRoom {
     }
 
     public void broadcastChatMessage(final Player player, final String message) {
-        JsonObject object = new JsonObject();
-        object.addProperty("player", player.getName());
-        object.addProperty("message", message);
-        broadcast("CHAT", object);
+        for(PlayerState p : players.values()) {
+            final Player all = GameManager.getInstance().getPlayer(p.session);
+            all.sendMessage(player.getName() + ": " + message);
+        }
     }
 
     public int getMaxPlayers() {

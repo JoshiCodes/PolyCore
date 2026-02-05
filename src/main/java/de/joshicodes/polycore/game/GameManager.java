@@ -1,6 +1,7 @@
 package de.joshicodes.polycore.game;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import de.joshicodes.polycore.util.packet.Packet;
 import de.joshicodes.polycore.util.packets.PacketRegistry;
 import jakarta.websocket.CloseReason;
@@ -51,6 +52,7 @@ public class GameManager {
         }
         if(room.playerJoin(player)) {
             loc.put(player.getSession().getId(), roomId);
+
             return true;
         } else {
             return false;
@@ -130,10 +132,19 @@ public class GameManager {
      */
     public void broadcastChatMessage(Player player, String command) {
         final String roomId = loc.get(player.getSession().getId());
-        if(roomId == null) return;
-        final GameRoom room = rooms.get(roomId);
-        if(room == null) return;
+        final GameRoom room = roomId != null ? rooms.get(roomId) : null;
+        if(roomId == null || room == null) {
+            broadcastChatToAll(player, command);
+            return;
+        }
         room.broadcastChatMessage(player, command);
+    }
+
+    private void broadcastChatToAll(Player player, String command) {
+        for(Player all : players.values()) {
+            if(loc.containsKey(all.getSession().getId())) continue; // In room
+            all.sendMessage(player.getName() + ": " + command);
+        }
     }
 
     public PacketRegistry getPacketRegistry() {
@@ -142,6 +153,10 @@ public class GameManager {
 
     public ConcurrentHashMap<String, GameRoom> getRooms() {
         return rooms;
+    }
+
+    public GameRoom getRoom(String roomId) {
+        return rooms.get(roomId);
     }
 
 }

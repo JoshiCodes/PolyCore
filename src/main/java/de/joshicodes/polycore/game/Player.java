@@ -37,7 +37,7 @@ public class Player implements CommandSender {
 
     @Override
     public boolean isAdmin() {
-        return false;
+        return true;
     }
 
     public Session getSession() {
