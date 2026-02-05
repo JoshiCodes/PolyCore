@@ -11,8 +11,7 @@
 
 </div>
 
-
----> [!Note]
+> [!WARNING]  
 >
 > This Project is currently in early development and is not yet ready for production use. The core server functionality is being built, but many features are still in progress. Stay tuned for updates!
 
