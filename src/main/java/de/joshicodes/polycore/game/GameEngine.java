@@ -152,6 +152,7 @@ public class GameEngine {
         currentDimension = currentPiece.dimension;
         currentX = BOARD_WIDTH / 2 - (currentDimension / 2);
         currentY = 0; // top
+        holdUsed = false;
     }
 
     public void reset() {
