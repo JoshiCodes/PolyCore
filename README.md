@@ -53,15 +53,8 @@ application:
   host: 0.0.0.0       # Bind address (0.0.0.0 for all interfaces)
   port: 3091          # Server port
 
-# WIP - none of these work yet
-game:
-  administrator:
-    first-join: true        # First player gets admin privileges
-    server-command: true    # Allow /op command in console
-  max-players: 4            # Maximum players per room
-  tick-rate: 10             # Game tick rate
-  use-password: false       # Require password to join
-  default-password: 'polycore'
+# Some other settings
+# which will not work yet, but will be implemented in the future.
 ```
 
 ---
