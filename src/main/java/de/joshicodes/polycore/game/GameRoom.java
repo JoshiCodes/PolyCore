@@ -74,6 +74,8 @@ public class GameRoom {
         switch (cmd.toUpperCase()) {
             case "LEFT" -> player.engine.move(-1);
             case "RIGHT" -> player.engine.move(1);
+            case "DOWN" -> player.engine.down();
+            case "DROP" -> player.engine.drop();
             case "ROTATE" -> player.engine.rotate();
             default -> {
                 return;
