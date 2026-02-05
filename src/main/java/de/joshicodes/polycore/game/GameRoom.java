@@ -96,7 +96,8 @@ public class GameRoom {
                             state.engine.getCurrentY(),
                             state.engine.getColorId(),
                             state.engine.getCurrentShape(),
-                            state.engine.getNextPiece()
+                            state.engine.getNextPiece(),
+                            state.engine.getHoldPiece()
                     )
             );
         });

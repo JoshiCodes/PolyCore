@@ -2,12 +2,12 @@ package de.joshicodes.polycore.util.packet;
 
 import de.joshicodes.polycore.game.Shape;
 
-public class NextShapeDTO {
+public class PieceDTO {
 
     public int[][] shape;
     public int colorId;
 
-    public NextShapeDTO(Shape nextShape) {
+    public PieceDTO(Shape nextShape) {
         this.shape = nextShape.shape;
         this.colorId = nextShape.colorId;
     }

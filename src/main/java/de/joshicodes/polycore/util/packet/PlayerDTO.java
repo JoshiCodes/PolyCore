@@ -9,16 +9,19 @@ public class PlayerDTO {
     public int cx, cy;
     public int colorId;
     public int[][] shape;
-    public NextShapeDTO nextPiece;
+    public PieceDTO nextPiece;
+    public PieceDTO holdPiece;
 
-    public PlayerDTO(int[][] b, boolean a, int x, int y, int c, int[][] shape, Shape nextPiece) {
+    public PlayerDTO(int[][] b, boolean a, int x, int y, int c, int[][] shape, Shape nextPiece, Shape holdPiece) {
         this.board = b;
         this.alive = a;
         this.cx = x;
         this.cy = y;
         this.colorId = c;
         this.shape = shape;
-        this.nextPiece = new NextShapeDTO(nextPiece);
+        this.nextPiece = new PieceDTO(nextPiece);
+        if(holdPiece != null)
+            this.holdPiece = new PieceDTO(holdPiece);
     }
 
 }

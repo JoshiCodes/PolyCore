@@ -11,6 +11,7 @@ public class GameEngine {
     private boolean holdUsed = false;
     private Shape currentPiece;
     private Shape nextPiece;
+    private Shape holdPiece;
     private int[][] currentShape;
 
     private int currentX, currentY, currentDimension;
@@ -78,14 +79,14 @@ public class GameEngine {
     public void holdPiece() {
         if(holdUsed) return;
         holdUsed = true;
-        if(nextPiece == null) {
-            nextPiece = currentPiece;
+        if(holdPiece == null) {
+            holdPiece = currentPiece;
             spawnPiece();
             return;
         }
         Shape temp = currentPiece;
-        currentPiece = nextPiece;
-        nextPiece = temp;
+        currentPiece = holdPiece;
+        holdPiece = temp;
         currentShape = currentPiece.shape;
         currentDimension = currentPiece.dimension;
         currentX = BOARD_WIDTH / 2 - (currentDimension / 2);
@@ -192,6 +193,10 @@ public class GameEngine {
 
     public Shape getNextPiece() {
         return nextPiece;
+    }
+
+    public Shape getHoldPiece() {
+        return holdPiece;
     }
 
 }
