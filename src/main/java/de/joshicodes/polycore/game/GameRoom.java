@@ -71,6 +71,9 @@ public class GameRoom {
             case "LEFT" -> player.engine.move(-1);
             case "RIGHT" -> player.engine.move(1);
             case "ROTATE" -> player.engine.rotate();
+            default -> {
+                return;
+            }
         }
         sendUpdate();
     }
@@ -130,6 +133,18 @@ public class GameRoom {
         object.addProperty("player", player.getName());
         object.addProperty("message", message);
         broadcast("CHAT", object);
+    }
+
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    public int getPlayerCount() {
+        return players.size();
+    }
+
+    public boolean isRunning() {
+        return running;
     }
 
 }

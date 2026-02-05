@@ -2,16 +2,16 @@ package de.joshicodes.polycore.game;
 
 import com.google.gson.Gson;
 import de.joshicodes.polycore.util.packet.Packet;
+import de.joshicodes.polycore.util.packets.PacketRegistry;
 import jakarta.websocket.CloseReason;
 import jakarta.websocket.Session;
 
 import java.io.IOException;
-import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class GameManager {
 
-    private static final GameManager INSTANCE = new GameManager();
+    private static GameManager INSTANCE;
 
     public static GameManager getInstance() {
         return INSTANCE;
@@ -21,7 +21,12 @@ public class GameManager {
     private final ConcurrentHashMap<String, String> loc = new ConcurrentHashMap<>(); // sessionId -> roomId
     private final ConcurrentHashMap<String, GameRoom> rooms = new ConcurrentHashMap<>(); // roomId -> GameRoom
 
-    private final Random rand = new Random();
+    private final PacketRegistry packetRegistry;
+
+    public GameManager() {
+        INSTANCE = this;
+        packetRegistry = new PacketRegistry(this, "de.joshicodes.polycore.game.handler");
+    }
 
     public Player registerPlayer(final Session session, final String name) {
         if(players.containsKey(session.getId())) {
@@ -129,6 +134,14 @@ public class GameManager {
         final GameRoom room = rooms.get(roomId);
         if(room == null) return;
         room.broadcastChatMessage(player, command);
+    }
+
+    public PacketRegistry getPacketRegistry() {
+        return packetRegistry;
+    }
+
+    public ConcurrentHashMap<String, GameRoom> getRooms() {
+        return rooms;
     }
 
 }

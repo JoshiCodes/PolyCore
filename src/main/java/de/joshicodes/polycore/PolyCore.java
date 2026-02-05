@@ -2,6 +2,7 @@ package de.joshicodes.polycore;
 
 import de.joshicodes.polycore.commands.StopCommand;
 import de.joshicodes.polycore.game.GameEndpoint;
+import de.joshicodes.polycore.game.GameManager;
 import de.joshicodes.polycore.util.commands.CommandManager;
 import de.joshicodes.polycore.commands.HelpCommand;
 import de.joshicodes.polycore.util.commands.ConsoleSender;
@@ -62,6 +63,7 @@ public class PolyCore {
 
             consoleSender.sendMessage(ChatColor.YELLOW + "Starting websocket server...");
             server.start();
+            new GameManager();
             consoleSender.sendMessage(ChatColor.YELLOW + "Done!");
 
             consoleSender.sendMessage(ChatColor.YELLOW + "Registering Commands...");
