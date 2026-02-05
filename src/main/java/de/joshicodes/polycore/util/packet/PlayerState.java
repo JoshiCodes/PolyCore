@@ -9,12 +9,19 @@ public class PlayerState {
     public final Session session;
     public final String name;
     public final GameEngine engine;
-    public boolean isAlive = true;
 
     public PlayerState(final Session session, final String name) {
         this.session = session;
         this.name = name;
         this.engine = new GameEngine();
+    }
+
+    public void reset() {
+        this.engine.reset();
+    }
+
+    public boolean isAlive() {
+        return !engine.isGameOver();
     }
 
 }

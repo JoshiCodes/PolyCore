@@ -39,7 +39,7 @@ public class GameRoom {
 
     public void start() {
         if(isRunning()) return;
-        players.values().forEach(state -> state.engine.reset());
+        players.values().forEach(state -> state.reset());
         running = true;
         loop = Executors.newSingleThreadScheduledExecutor();
         loop.scheduleAtFixedRate(this::tick, 0, 500, java.util.concurrent.TimeUnit.MILLISECONDS); // TODO: Read from config or something
@@ -50,12 +50,11 @@ public class GameRoom {
         int alive = 0;
         PlayerState winner = null;
         for(PlayerState player : players.values()) {
-            if(!player.isAlive) continue;
+            if(!player.isAlive()) continue;
             alive++;
             winner = player;
             int lines = player.engine.tick();
-            if(lines == -1) {
-                player.isAlive = false;
+            if(lines == -1 || !player.isAlive()) {
                 broadcast("DEATH", player.name);
             } else if(lines > 1) {
                 // TODO: Attack others
@@ -70,7 +69,7 @@ public class GameRoom {
 
     public void handleInput(final Session session, final String cmd) {
         final PlayerState player = players.get(session.getId());
-        if(player == null || !player.isAlive) return;
+        if(player == null || !player.isAlive()) return;
         switch (cmd.toUpperCase()) {
             case "LEFT" -> player.engine.move(-1);
             case "RIGHT" -> player.engine.move(1);
@@ -91,7 +90,7 @@ public class GameRoom {
                     state.name,
                     new PlayerDTO(
                             state.engine.getBoard(),
-                            state.isAlive,
+                            state.isAlive(),
                             state.engine.getCurrentX(),
                             state.engine.getCurrentY(),
                             state.engine.getColorId(),

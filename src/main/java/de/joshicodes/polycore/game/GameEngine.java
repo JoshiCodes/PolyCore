@@ -34,13 +34,8 @@ public class GameEngine {
             currentY++;
             return 0;
         }
-        // Place piece
-        lockPiece();
-        int lines = checkLines();
-        spawnPiece();
-        if(!isValidMove(currentShape, currentX, currentY + 1)) {
-            gameOver = true;
-        }
+        // place piece
+        int lines = placePiece();
         return lines;
     }
 
@@ -75,7 +70,18 @@ public class GameEngine {
         while(isValidMove(currentShape, currentX, currentY + 1)) {
             currentY++;
         }
+        placePiece();
+    }
+
+    private int placePiece() {
         lockPiece();
+        final int lines = checkLines();
+        spawnPiece();
+        if(!isValidMove(currentShape, currentX, currentY)) {
+            gameOver = true;
+            return -1;
+        }
+        return lines;
     }
 
     private int checkLines() {
