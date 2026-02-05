@@ -6,7 +6,7 @@ public class ConsoleSender implements CommandSender {
 
     @Override
     public void sendMessage(String message) {
-        System.out.println(ChatColor.RESET + message + ChatColor.RESET);
+        System.out.println(ChatColor.RESET + ChatColor.toAnsi(message));
     }
 
     @Override

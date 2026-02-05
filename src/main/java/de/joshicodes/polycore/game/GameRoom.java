@@ -76,6 +76,7 @@ public class GameRoom {
             case "DOWN" -> player.engine.down();
             case "DROP" -> player.engine.drop();
             case "ROTATE" -> player.engine.rotate();
+            case "HOLD" -> player.engine.holdPiece();
             default -> {
                 return;
             }
@@ -94,7 +95,8 @@ public class GameRoom {
                             state.engine.getCurrentX(),
                             state.engine.getCurrentY(),
                             state.engine.getColorId(),
-                            state.engine.getCurrentShape()
+                            state.engine.getCurrentShape(),
+                            state.engine.getNextPiece()
                     )
             );
         });

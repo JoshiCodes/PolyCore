@@ -8,7 +8,9 @@ public class GameEngine {
     public static final int BOARD_HEIGHT = 20;
 
     private int[][] board = new int[BOARD_HEIGHT][BOARD_WIDTH];
+    private boolean holdUsed = false;
     private Shape currentPiece;
+    private Shape nextPiece;
     private int[][] currentShape;
 
     private int currentX, currentY, currentDimension;
@@ -73,6 +75,23 @@ public class GameEngine {
         placePiece();
     }
 
+    public void holdPiece() {
+        if(holdUsed) return;
+        holdUsed = true;
+        if(nextPiece == null) {
+            nextPiece = currentPiece;
+            spawnPiece();
+            return;
+        }
+        Shape temp = currentPiece;
+        currentPiece = nextPiece;
+        nextPiece = temp;
+        currentShape = currentPiece.shape;
+        currentDimension = currentPiece.dimension;
+        currentX = BOARD_WIDTH / 2 - (currentDimension / 2);
+        currentY = 0; // top
+    }
+
     private int placePiece() {
         lockPiece();
         final int lines = checkLines();
@@ -126,8 +145,9 @@ public class GameEngine {
     }
 
     private void spawnPiece() {
-        currentPiece = Shape.values()[rand.nextInt(Shape.values().length)];
+        currentPiece = nextPiece != null ? nextPiece : Shape.values()[rand.nextInt(Shape.values().length)];
         currentShape = currentPiece.shape;
+        nextPiece = Shape.values()[rand.nextInt(Shape.values().length)];
         currentDimension = currentPiece.dimension;
         currentX = BOARD_WIDTH / 2 - (currentDimension / 2);
         currentY = 0; // top
@@ -168,6 +188,10 @@ public class GameEngine {
 
     public Shape getCurrentPiece() {
         return currentPiece;
+    }
+
+    public Shape getNextPiece() {
+        return nextPiece;
     }
 
 }
