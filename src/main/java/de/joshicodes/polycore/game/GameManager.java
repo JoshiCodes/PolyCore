@@ -5,6 +5,7 @@ import de.joshicodes.polycore.util.packet.Packet;
 import de.joshicodes.polycore.util.packet.incoming.PacketRegistry;
 import jakarta.websocket.CloseReason;
 import jakarta.websocket.Session;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,6 +45,12 @@ public class GameManager {
         if(!players.containsKey(player.getSession().getId())) {
             // New player - should not happen, player needs to authenticate first
             return false;
+        }
+        final GameRoom current = getRoomByPlayer(player);
+        if(current != null) {
+            // Player is already in a room, should not happen, but let's handle it gracefully
+            current.removePlayerById(player.getSession().getId());
+            loc.remove(player.getSession().getId());
         }
         GameRoom room = rooms.get(roomId);
         if(room == null) {
@@ -156,6 +163,11 @@ public class GameManager {
 
     public GameRoom getRoom(String roomId) {
         return rooms.get(roomId);
+    }
+
+    public GameRoom getRoomByPlayer(@NotNull final Player player) {
+        final String roomId = loc.get(player.getSession().getId());
+        return roomId != null ? rooms.get(roomId) : null;
     }
 
 }

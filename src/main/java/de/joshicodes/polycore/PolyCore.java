@@ -1,5 +1,6 @@
 package de.joshicodes.polycore;
 
+import de.joshicodes.polycore.commands.StartCommand;
 import de.joshicodes.polycore.commands.StopCommand;
 import de.joshicodes.polycore.game.GameEndpoint;
 import de.joshicodes.polycore.game.GameManager;
@@ -69,6 +70,7 @@ public class PolyCore {
             consoleSender.sendMessage(ChatColor.YELLOW + "Registering Commands...");
             commandManager.registerCommand(this, new HelpCommand());
             commandManager.registerCommand(this, new StopCommand());
+            commandManager.registerCommand(this, new StartCommand());
             consoleSender.sendMessage(ChatColor.YELLOW + "Done!");
 
             consoleSender.sendMessage("");

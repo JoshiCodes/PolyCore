@@ -65,6 +65,19 @@ public class GameEngine {
         if(isValidMove(currentShape, currentX + dx, currentY)) { currentX += dx; }
     }
 
+    public void down() {
+        if(isValidMove(currentShape, currentX, currentY + 1)) {
+            currentY++;
+        }
+    }
+
+    public void drop() {
+        while(isValidMove(currentShape, currentX, currentY + 1)) {
+            currentY++;
+        }
+        lockPiece();
+    }
+
     private int checkLines() {
         int cleared = 0;
         for(int y = BOARD_HEIGHT - 1; y >= 0; y--) {
@@ -112,6 +125,11 @@ public class GameEngine {
         currentDimension = currentPiece.dimension;
         currentX = BOARD_WIDTH / 2 - (currentDimension / 2);
         currentY = 0; // top
+    }
+
+    public void reset() {
+        board = new int[BOARD_HEIGHT][BOARD_WIDTH];
+        gameOver = false;
     }
 
     public boolean isGameOver() {

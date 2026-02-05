@@ -19,7 +19,7 @@ public class GameRoom {
     private final String name;
     private final int maxPlayers;
     private final ConcurrentHashMap<String, PlayerState> players = new ConcurrentHashMap<>();
-    private final ScheduledExecutorService loop = Executors.newSingleThreadScheduledExecutor();
+    private ScheduledExecutorService loop;
     private final Gson gson = new Gson();
     private boolean running = false;
 
@@ -37,8 +37,11 @@ public class GameRoom {
         return true;
     }
 
-    private void start() {
+    public void start() {
+        if(isRunning()) return;
+        players.values().forEach(state -> state.engine.reset());
         running = true;
+        loop = Executors.newSingleThreadScheduledExecutor();
         loop.scheduleAtFixedRate(this::tick, 0, 500, java.util.concurrent.TimeUnit.MILLISECONDS); // TODO: Read from config or something
         broadcast("START", "Go!");
     }
@@ -53,12 +56,12 @@ public class GameRoom {
             int lines = player.engine.tick();
             if(lines == -1) {
                 player.isAlive = false;
-                // TODO: Broadcast death
+                broadcast("DEATH", player.name);
             } else if(lines > 1) {
                 // TODO: Attack others
             }
         }
-        if(players.size() > 1 && alive <= 1) {
+        if(alive < 1 || (players.size() > 1 && alive == 1)) {
             broadcast("WINNER", winner != null ? winner.name : "null");
             stop();
         }
@@ -89,7 +92,8 @@ public class GameRoom {
                             state.isAlive,
                             state.engine.getCurrentX(),
                             state.engine.getCurrentY(),
-                            state.engine.getColorId()
+                            state.engine.getColorId(),
+                            state.engine.getCurrentShape()
                     )
             );
         });
@@ -122,11 +126,17 @@ public class GameRoom {
     }
 
     public void removePlayer(final Session session) {
-        players.remove(session.getId());
+        removePlayerById(session.getId());
     }
 
     public void removePlayerById(final String id) {
         players.remove(id);
+
+        if(isEmpty()) {
+            stop();
+        } else {
+            broadcast("LEAVE", id);
+        }
     }
 
     public void broadcastChatMessage(final Player player, final String message) {
