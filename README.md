@@ -1,6 +1,8 @@
-# 🎮 PolyCore
+<img src="logo.png" style="display: block; margin-left: auto; margin-right: auto; max-width: 100%;" alt="PolyCore Logo">
 
 <div align="center">
+
+# PolyCore
 
 **A Simple and Small Multiplayer Tetris Server in Java using WebSockets**
 
@@ -189,5 +191,7 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 <div align="center">
 
 **Made with ❤️ and ☕ by JoshiCodes**
+<br>
+**Logo SVG by Neuicons from [svgrepo.com](https://www.svgrepo.com/svg/488417/tetris)**
 
 </div>
