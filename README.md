@@ -1,6 +1,6 @@
-<img src="logo.png" style="display: block; margin-left: auto; margin-right: auto; max-width: 100%;" alt="PolyCore Logo">
 
 <div align="center">
+<img src="logo.png" style="display: block; margin-left: auto; margin-right: auto; max-width: 100%;" alt="PolyCore Logo">
 
 # PolyCore
 
