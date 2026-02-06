@@ -30,9 +30,13 @@ PolyCore is a lightweight, real-time multiplayer Tetris server built with Java a
 - 🎮 **Full Tetris Mechanics** - Rotation, hold piece, hard drop, line clearing, and more
 
 ### Clients
-#### Currently, there are no official clients for PolyCore.
+#### Currently, there is only one very basic example client (Written with Github Co-Pilot)
 #### However, you can create your own client using any WebSocket library that follows the packet structure defined in the documentation below.
 #### I do plan on creating a simple web-based client in the future (or even a Java-based one), as soon as the Server is working as intended.
+
+- [Example Client](https://github.com/JoshiCodes/PolyCore/tree/master/clients/example/)
+  * A very simple example Client written in HTML and JavaScript, which can be used as a base for your own client or just to test the server functionality.
+    <br>(Used for initial testing, written by Copilot)
 
 ---
 
