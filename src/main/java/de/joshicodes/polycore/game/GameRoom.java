@@ -76,7 +76,7 @@ public class GameRoom {
         for(Map.Entry<String, Integer> entry : pendingAttacks.entrySet()) {
             PlayerState target = players.get(entry.getKey());
             if(target != null && target.isAlive()) {
-                target.engine.addGarbage(entry.getValue());
+                target.engine.queueGarbage(entry.getValue());
             }
         }
 
