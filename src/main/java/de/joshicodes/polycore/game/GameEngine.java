@@ -231,6 +231,9 @@ public class GameEngine {
     public void reset() {
         board = new int[BOARD_HEIGHT][BOARD_WIDTH];
         gameOver = false;
+        points = 0;
+        holdPiece = null;
+        nextPiece = null;
     }
 
     public boolean isGameOver() {
