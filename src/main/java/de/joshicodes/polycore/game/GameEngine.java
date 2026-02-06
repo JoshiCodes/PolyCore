@@ -15,6 +15,7 @@ public class GameEngine {
     private int[][] currentShape;
 
     private int currentX, currentY, currentDimension;
+    private double points = 0;
 
     private boolean gameOver = false;
 
@@ -101,7 +102,22 @@ public class GameEngine {
             gameOver = true;
             return -1;
         }
+        addPoints(lines);
         return lines;
+    }
+
+    private void addPoints(final int lines) {
+        if(lines <= 0) {
+            return;
+        } else {
+            points += switch (lines) {
+                case 1 -> 100;
+                case 2 -> 300;
+                case 3 -> 500;
+                case 4 -> 800;
+                default -> lines * 200; // Should never happen
+            };
+        }
     }
 
     private int checkLines() {
@@ -198,6 +214,10 @@ public class GameEngine {
 
     public Shape getHoldPiece() {
         return holdPiece;
+    }
+
+    public double getPoints() {
+        return points;
     }
 
 }
