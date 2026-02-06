@@ -14,6 +14,7 @@ public class GameEngine {
     private Shape holdPiece;
     private int[][] currentShape;
 
+    private int lastLinesCleared = 0;
     private int pendingGarbage = 0;
 
     private int currentX, currentY, currentDimension;
@@ -125,6 +126,7 @@ public class GameEngine {
             return -1;
         }
         addPoints(lines);
+        lastLinesCleared = lines;
         return lines;
     }
 
@@ -234,6 +236,7 @@ public class GameEngine {
         points = 0;
         holdPiece = null;
         nextPiece = null;
+        lastLinesCleared = 0;
         spawnPiece();
     }
 
@@ -279,6 +282,16 @@ public class GameEngine {
 
     public double getPoints() {
         return points;
+    }
+
+    public int getLastLinesCleared() {
+        return lastLinesCleared;
+    }
+
+    public int consumeLastLinesCleared() {
+        int lines = lastLinesCleared;
+        lastLinesCleared = 0;
+        return lines;
     }
 
 }

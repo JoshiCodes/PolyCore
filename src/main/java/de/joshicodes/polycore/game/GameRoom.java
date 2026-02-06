@@ -48,36 +48,34 @@ public class GameRoom {
     private void tick() {
         int alive = 0;
         PlayerState winner = null;
-        Map<String, Integer> pendingAttacks = new HashMap<>();
+
         for(PlayerState player : players.values()) {
             if(!player.isAlive()) continue;
             alive++;
             winner = player;
-            int lines = player.engine.tick();
-            if(lines == -1 || !player.isAlive()) {
-                broadcast("DEATH", player.name);
-            } else if(lines > 1) {
-                // Calculate garbage to send (lines - 1 is common, or use a table)
-                int garbageToSend = calculateGarbage(lines);
+            player.engine.tick();
 
-                // Queue attacks for other players
+            // Check for death
+            if(!player.isAlive()) {
+                broadcast("DEATH", player.name);
+                continue;
+            }
+
+            // Check for lines cleared
+            int linesCleared = player.engine.consumeLastLinesCleared();
+
+            if(linesCleared > 1) {
+                int garbageToSend = calculateGarbage(linesCleared);
+
                 for(PlayerState other : players.values()) {
                     if(other != player && other.isAlive()) {
-                        pendingAttacks.merge(other.session.getId(), garbageToSend, Integer::sum);
+                        other.engine.queueGarbage(garbageToSend);
                     }
                 }
 
-                // Notify about the attack
                 broadcast("ATTACK", gson.toJsonTree(new AttackPayload(player.name, garbageToSend)));
             }
-        }
 
-        // Apply pending garbage attacks
-        for(Map.Entry<String, Integer> entry : pendingAttacks.entrySet()) {
-            PlayerState target = players.get(entry.getKey());
-            if(target != null && target.isAlive()) {
-                target.engine.queueGarbage(entry.getValue());
-            }
         }
 
         if(alive < 1 || (players.size() > 1 && alive == 1)) {
