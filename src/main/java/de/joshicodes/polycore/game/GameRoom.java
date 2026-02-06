@@ -3,12 +3,11 @@ package de.joshicodes.polycore.game;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import de.joshicodes.polycore.util.packet.GameStatePayload;
-import de.joshicodes.polycore.util.packet.Packet;
-import de.joshicodes.polycore.util.packet.PlayerDTO;
-import de.joshicodes.polycore.util.packet.PlayerState;
+import de.joshicodes.polycore.util.packet.*;
 import jakarta.websocket.Session;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -49,6 +48,7 @@ public class GameRoom {
     private void tick() {
         int alive = 0;
         PlayerState winner = null;
+        Map<String, Integer> pendingAttacks = new HashMap<>();
         for(PlayerState player : players.values()) {
             if(!player.isAlive()) continue;
             alive++;
@@ -57,14 +57,44 @@ public class GameRoom {
             if(lines == -1 || !player.isAlive()) {
                 broadcast("DEATH", player.name);
             } else if(lines > 1) {
-                // TODO: Attack others
+                // Calculate garbage to send (lines - 1 is common, or use a table)
+                int garbageToSend = calculateGarbage(lines);
+
+                // Queue attacks for other players
+                for(PlayerState other : players.values()) {
+                    if(other != player && other.isAlive()) {
+                        pendingAttacks.merge(other.session.getId(), garbageToSend, Integer::sum);
+                    }
+                }
+
+                // Notify about the attack
+                broadcast("ATTACK", gson.toJsonTree(new AttackPayload(player.name, garbageToSend)));
             }
         }
+
+        // Apply pending garbage attacks
+        for(Map.Entry<String, Integer> entry : pendingAttacks.entrySet()) {
+            PlayerState target = players.get(entry.getKey());
+            if(target != null && target.isAlive()) {
+                target.engine.addGarbage(entry.getValue());
+            }
+        }
+
         if(alive < 1 || (players.size() > 1 && alive == 1)) {
             broadcast("WINNER", winner != null ? winner.name : "null");
             stop();
         }
         sendUpdate();
+    }
+
+    private int calculateGarbage(int linesCleared) {
+        // Common Tetris attack table
+        return switch(linesCleared) {
+            case 2 -> 1;  // Double sends 1 garbage
+            case 3 -> 2;  // Triple sends 2 garbage
+            case 4 -> 4;  // Tetris sends 4 garbage
+            default -> 0;
+        };
     }
 
     public void handleInput(final Session session, final String cmd) {

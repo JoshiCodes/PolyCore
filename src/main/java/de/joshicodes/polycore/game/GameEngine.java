@@ -14,6 +14,8 @@ public class GameEngine {
     private Shape holdPiece;
     private int[][] currentShape;
 
+    private int pendingGarbage = 0;
+
     private int currentX, currentY, currentDimension;
     private double points = 0;
 
@@ -23,6 +25,10 @@ public class GameEngine {
 
     public GameEngine() {
         spawnPiece();
+    }
+
+    public void queueGarbage(final int lines) {
+        pendingGarbage += lines;
     }
 
     /**
@@ -96,7 +102,23 @@ public class GameEngine {
 
     private int placePiece() {
         lockPiece();
-        final int lines = checkLines();
+        int lines = checkLines();
+
+        if(lines > 0 && pendingGarbage > 0) {
+            // If we cleared lines and have pending garbage, we can reduce the garbage by the cleared lines
+            int counter = Math.min(lines, pendingGarbage);
+            pendingGarbage -= counter;
+            lines -= counter;
+            if(lines < 0) {
+                lines = 0;
+            }
+        }
+
+        if(pendingGarbage > 0) {
+            addGarbage(pendingGarbage);
+            pendingGarbage = 0;
+        }
+
         spawnPiece();
         if(!isValidMove(currentShape, currentX, currentY)) {
             gameOver = true;
@@ -104,6 +126,41 @@ public class GameEngine {
         }
         addPoints(lines);
         return lines;
+    }
+
+    /**
+     * Adds garbage with random gap position.
+     */
+    public void addGarbage(int lines) {
+        addGarbage(lines, rand.nextInt(BOARD_WIDTH));
+    }
+
+    public void addGarbage(int lines, int gapX) {
+        if(gameOver || lines <= 0) return;
+
+        // Shift existing rows up
+        for(int y = 0; y < BOARD_HEIGHT - lines; y++) {
+            board[y] = board[y + lines].clone();
+        }
+
+        // Fill bottom rows with garbage (colorId 8 = gray garbage)
+        for(int y = BOARD_HEIGHT - lines; y < BOARD_HEIGHT; y++) {
+            for(int x = 0; x < BOARD_WIDTH; x++) {
+                board[y][x] = (x == gapX) ? 0 : 8; // Gap at gapX, garbage elsewhere
+            }
+        }
+
+        // Check if current piece is now invalid (pushed into collision)
+        if(!isValidMove(currentShape, currentX, currentY)) {
+            // Try to push piece up
+            while(!isValidMove(currentShape, currentX, currentY) && currentY > 0) {
+                currentY--;
+            }
+            // If still invalid, game over
+            if(!isValidMove(currentShape, currentX, currentY)) {
+                gameOver = true;
+            }
+        }
     }
 
     private void addPoints(final int lines) {
