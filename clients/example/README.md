@@ -1,5 +1,7 @@
 # Example HTTP Client
 
+<img src="ExampleScreenshot.png" alt="Example ScreenShot" width="1443">
+
 This is an example HTTP Client for PolyCore,
 to demonstrate how to connect to the WebSocket, Authenticate and use the Server.
 
