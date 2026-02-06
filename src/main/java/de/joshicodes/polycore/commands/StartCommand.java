@@ -23,12 +23,11 @@ public class StartCommand extends Command {
         }
         if(!room.isRunning()) {
             room.start();
-            player.sendMessage(ChatColor.GREEN + "Game started!");
-            return true;
+            player.sendMessage(ChatColor.GREEN + "You started the game!");
         } else {
             player.sendMessage(ChatColor.RED + "The game is already running!");
-            return true;
         }
+        return true;
     }
 
 }

@@ -39,7 +39,7 @@ public class GameRoom {
 
     public void start() {
         if(isRunning()) return;
-        players.values().forEach(state -> state.reset());
+        players.values().forEach(PlayerState::reset);
         running = true;
         loop = Executors.newSingleThreadScheduledExecutor();
         loop.scheduleAtFixedRate(this::tick, 0, 500, java.util.concurrent.TimeUnit.MILLISECONDS); // TODO: Read from config or something

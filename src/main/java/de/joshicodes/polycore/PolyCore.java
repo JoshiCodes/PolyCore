@@ -80,7 +80,7 @@ public class PolyCore {
             consoleSender.sendMessage(ChatColor.YELLOW + "Checking for updates...");
             VersionUtil.UpdateInfo updateInfo = VersionUtil.checkForUpdates();
             if(updateInfo != null) {
-                consoleSender.sendMessage(ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + "A new version of PolyCore is available! Download it here: " + updateInfo.downloadUrl());
+                consoleSender.sendMessage(ChatColor.YELLOW + ChatColor.BOLD.toString() + "A new version of PolyCore is available! Download it here: " + updateInfo.downloadUrl());
             } else {
                 consoleSender.sendMessage(ChatColor.GREEN + "You are running the latest version of PolyCore! Great!");
             }
