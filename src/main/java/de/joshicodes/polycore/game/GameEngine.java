@@ -234,6 +234,7 @@ public class GameEngine {
         points = 0;
         holdPiece = null;
         nextPiece = null;
+        spawnPiece();
     }
 
     public boolean isGameOver() {
