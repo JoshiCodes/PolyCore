@@ -28,7 +28,7 @@ public class PolyCore {
 
     private final YamlDocument config;
     private final Server server;
-
+//test
     private final Thread commandThread;
     private final CommandManager commandManager;
 
