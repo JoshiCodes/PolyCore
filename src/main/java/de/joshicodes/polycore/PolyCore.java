@@ -1,9 +1,11 @@
 package de.joshicodes.polycore;
 
+import de.joshicodes.polycore.commands.PluginsCommand;
 import de.joshicodes.polycore.commands.StartCommand;
 import de.joshicodes.polycore.commands.StopCommand;
 import de.joshicodes.polycore.game.GameEndpoint;
 import de.joshicodes.polycore.game.GameManager;
+import de.joshicodes.polycore.plugins.PluginManager;
 import de.joshicodes.polycore.util.commands.CommandManager;
 import de.joshicodes.polycore.commands.HelpCommand;
 import de.joshicodes.polycore.util.commands.ConsoleSender;
@@ -29,6 +31,7 @@ public class PolyCore {
     private final YamlDocument config;
     private final Server server;
 
+    private final PluginManager pluginManager;
     private final Thread commandThread;
     private final CommandManager commandManager;
 
@@ -54,6 +57,8 @@ public class PolyCore {
                 GameEndpoint.class
         );
 
+        pluginManager = new PluginManager(this);
+
         commandManager = new CommandManager(this);
 
         try {
@@ -69,6 +74,12 @@ public class PolyCore {
             commandManager.registerCommand(this, new HelpCommand());
             commandManager.registerCommand(this, new StopCommand());
             commandManager.registerCommand(this, new StartCommand());
+            commandManager.registerCommand(this, new PluginsCommand());
+            consoleSender.sendMessage(ChatColor.YELLOW + "Done!");
+
+            consoleSender.sendMessage(ChatColor.YELLOW + "Loading Plugins...");
+            pluginManager.loadPlugins();
+            pluginManager.enablePlugins();
             consoleSender.sendMessage(ChatColor.YELLOW + "Done!");
 
             consoleSender.sendMessage("");
@@ -137,6 +148,10 @@ public class PolyCore {
 
     public CommandManager getCommandManager() {
         return commandManager;
+    }
+
+    public PluginManager getPluginManager() {
+        return pluginManager;
     }
 
 }
