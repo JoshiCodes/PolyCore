@@ -24,7 +24,6 @@
                     <relocations>
                         <relocation>
                             <pattern>dev.dejvokep.boostedyaml</pattern>
-                            <!-- Replace this -->
                             <shadedPattern>de.joshicodes.libs</shadedPattern>
                         </relocation>
                     </relocations>
