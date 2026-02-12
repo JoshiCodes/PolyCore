@@ -96,7 +96,7 @@ public class PolyCore {
             consoleSender.sendMessage("");
             consoleSender.sendMessage(ChatColor.GREEN + "Server started successfully!");
             consoleSender.sendMessage(ChatColor.GREEN + "Listening on " + host + ":" + port + ".");
-            consoleSender.sendMessage(ChatColor.GREEN + "Type \"help\" for help.!");
+            consoleSender.sendMessage(ChatColor.GREEN + "Type \"help\" for help!");
 
 
             commandThread = new Thread(() -> {
