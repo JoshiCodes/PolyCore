@@ -159,6 +159,7 @@ Then, create a File, extend the `PolyPlugin` class and add a `PluginData` Annota
 The onEnable and onDisable functions will get called on the corresponding actions. You can add Commands with the #registerCommand method.
 Currently, there is no other way to interact with the game. You can try to use the PolyCore Class or other functions in the PolyPlugin Class.
 Events and more will come soon.
+View the [TestPlugin](https://github.com/JoshiCodes/PolyCore/blob/master/plugins/TestPlugin/src/main/java/de/joshicodes/polycore/plugins/test/TestPlugin.java) for an example.
 
 ---
 
