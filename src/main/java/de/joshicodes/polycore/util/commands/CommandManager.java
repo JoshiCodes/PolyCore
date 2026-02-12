@@ -12,7 +12,10 @@ public class CommandManager {
 
     private final List<Command> commands;
 
+    private final PolyCore core;
+
     public CommandManager(PolyCore polyCore) {
+        this.core = polyCore;
         this.commands = new ArrayList<>();
     }
 
@@ -22,8 +25,8 @@ public class CommandManager {
     }
 
     public void registerCommand(PolyPlugin plugin, final Command command) {
-        plugin.getCore().getConsoleSender().sendMessage(ChatColor.YELLOW + "Registering command '" + command.getLabel() + "'...");
-        commands.add(command);
+        registerCommand(core, command);
+        // Maybe save the corresponding plugin to each command...
     }
 
     public List<Command> getCommands() {

@@ -17,7 +17,7 @@ public class TestPlugin extends PolyPlugin {
 
     @Override
     public void onDisable() {
-
+        System.out.println("TestPlugin disabled!");
     }
 
 }

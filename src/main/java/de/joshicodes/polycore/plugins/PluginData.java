@@ -7,6 +7,6 @@ import java.lang.annotation.RetentionPolicy;
 public @interface PluginData {
 
     String name();
-    String version();
+    String version() default "1.0.0";
 
 }

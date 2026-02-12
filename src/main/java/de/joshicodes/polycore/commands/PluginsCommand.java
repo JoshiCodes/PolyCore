@@ -19,8 +19,10 @@ public class PluginsCommand extends Command {
         final List<String> pluginNames = PolyCore.getInstance().getPluginManager().getPluginNames();
         sender.sendMessage(ChatColor.YELLOW + "Loaded plugins: (" + pluginNames.size() + ")");
         final StringBuilder builder = new StringBuilder();
-        pluginNames.forEach(name -> builder.append(name).append(", "));
-        builder.delete(builder.length() - 2, builder.length());
+        if(!pluginNames.isEmpty()) {
+            pluginNames.forEach(name -> builder.append(name).append(", "));
+            builder.delete(builder.length() - 2, builder.length());
+        }
         sender.sendMessage("- " + ChatColor.GREEN + builder.toString());
         return true;
     }
