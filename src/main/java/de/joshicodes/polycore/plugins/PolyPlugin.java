@@ -1,6 +1,7 @@
 package de.joshicodes.polycore.plugins;
 
 import de.joshicodes.polycore.PolyCore;
+import de.joshicodes.polycore.util.ChatColor;
 import de.joshicodes.polycore.util.commands.Command;
 import de.joshicodes.polycore.util.commands.CommandManager;
 import dev.dejvokep.boostedyaml.YamlDocument;
@@ -63,7 +64,12 @@ public abstract class PolyPlugin {
     public void saveDefaults() throws IOException {
         try (final InputStream stream = getClass().getClassLoader().getResourceAsStream("config.yml")) {
             if (stream == null) return;
-            folder.mkdir();
+            try {
+                folder.mkdir();
+            } catch (Exception e) {
+                core.getConsoleSender().sendMessage(ChatColor.RED + "Failed to create plugin folder: " + e.getMessage());
+                return;
+            }
             config = YamlDocument.create(
                     new File(folder, "config.yml"),
                     stream
@@ -75,6 +81,11 @@ public abstract class PolyPlugin {
         if(config == null) {
             try {
                 folder.mkdir();
+            } catch (Exception e) {
+                core.getConsoleSender().sendMessage(ChatColor.RED + "Failed to create plugin folder: " + e.getMessage());
+                return null;
+            }
+            try {
                 config = YamlDocument.create(new File(folder, "config.yml"));
             } catch (IOException e) {
                 throw new RuntimeException(e);
