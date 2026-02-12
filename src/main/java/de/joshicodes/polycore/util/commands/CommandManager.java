@@ -2,6 +2,7 @@ package de.joshicodes.polycore.util.commands;
 
 import de.joshicodes.polycore.PolyCore;
 import de.joshicodes.polycore.game.Player;
+import de.joshicodes.polycore.plugins.PolyPlugin;
 import de.joshicodes.polycore.util.ChatColor;
 
 import java.util.ArrayList;
@@ -11,13 +12,21 @@ public class CommandManager {
 
     private final List<Command> commands;
 
+    private final PolyCore core;
+
     public CommandManager(PolyCore polyCore) {
+        this.core = polyCore;
         this.commands = new ArrayList<>();
     }
 
     public void registerCommand(PolyCore core, Command command) {
         core.getConsoleSender().sendMessage(ChatColor.YELLOW + "Registering command '" + command.getLabel() + "'...");
         commands.add(command);
+    }
+
+    public void registerCommand(PolyPlugin plugin, final Command command) {
+        registerCommand(core, command);
+        // Maybe save the corresponding plugin to each command...
     }
 
     public List<Command> getCommands() {
