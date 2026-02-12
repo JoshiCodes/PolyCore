@@ -30,6 +30,7 @@ PolyCore is a lightweight, real-time multiplayer Tetris server built with Java a
 - ⚙️ **Configurable** - Flexible YAML-based configuration
 - 🔌 **Extensible Packet System** - Easy-to-extend annotation-based packet handling
 - 🎮 **Full Tetris Mechanics** - Rotation, hold piece, hard drop, line clearing, and more
+- **Plugin-System** - extend the cababilities with simple to add plugins (like minecraft!)
 
 ### Clients
 #### Currently, there is only one very basic example client (Written with Github Co-Pilot)
@@ -148,6 +149,16 @@ Commands are sent via the `CHAT` packet with content prefixed by `/`:
 | `/stop` | Stop the server (admin only) |
 | `/start` | Start the game in current room |
 ##### More to follow!
+
+---
+
+## Plugins
+To create a plugin, simply add the PolyCore.jar to your project as dependency.
+(Maven dependency / repo coming soon!)
+Then, create a File, extend the `PolyPlugin` class and add a `PluginData` Annotation.
+The onEnable and onDisable functions will get called on the corresponding actions. You can add Commands with the #registerCommand method.
+Currently, there is no other way to interact with the game. You can try to use the PolyCore Class or other functions in the PolyPlugin Class.
+Events and more will come soon.
 
 ---
 
