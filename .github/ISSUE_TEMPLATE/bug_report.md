@@ -12,6 +12,8 @@ assignees: ''
 - [ ] Medium | There are some issues, but PolyCore itself still works.
 - [ ] Low | Issue only appears sometimes / doesnt affect the function of PolyCore directly / Everything else
 
+-> <describe why you think the bug is the priority you selected>
+
 **Is your feature request related to another issue? Please describe.**
 - [ ] No
 - [ ] Yes: (please describe)
@@ -29,5 +31,5 @@ A clear and concise description of what your problem is.
 **How to reproduce**
 Describe how to reproduce the issue
 
-**Additional context**
+**Additional context / Probable Causes / Possible Solution**
 Add any other context or screenshots about the bug report here.
