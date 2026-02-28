@@ -84,14 +84,18 @@ public class PolyCore {
 
             consoleSender.sendMessage("");
             consoleSender.sendMessage(ChatColor.GREEN + "==========================");
-            consoleSender.sendMessage(ChatColor.GREEN + "  PolyCore Server v" + VersionUtil.VERSION);
+            consoleSender.sendMessage(ChatColor.GREEN + "  PolyCore Server v" + VersionUtil.getVersion());
             consoleSender.sendMessage(ChatColor.GREEN + "==========================");
             consoleSender.sendMessage(ChatColor.YELLOW + "Checking for updates...");
             VersionUtil.UpdateInfo updateInfo = VersionUtil.checkForUpdates();
-            if(updateInfo != null) {
-                consoleSender.sendMessage(ChatColor.YELLOW + ChatColor.BOLD.toString() + "A new version of PolyCore is available! Download it here: " + updateInfo.downloadUrl());
+            if (updateInfo.version() == null) {
+                consoleSender.sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "Failed to check for updates! (Invalid response)");
             } else {
-                consoleSender.sendMessage(ChatColor.GREEN + "You are running the latest version of PolyCore! Great!");
+                if (updateInfo.version().equals(VersionUtil.getVersion())) {
+                    consoleSender.sendMessage(ChatColor.GREEN + "You are running the latest version of PolyCore! Great!");
+                } else {
+                    consoleSender.sendMessage(ChatColor.YELLOW + ChatColor.BOLD.toString() + "A new version of PolyCore is available! Download it here: " + updateInfo.downloadUrl());
+                }
             }
             consoleSender.sendMessage("");
             consoleSender.sendMessage(ChatColor.GREEN + "Server started successfully!");
