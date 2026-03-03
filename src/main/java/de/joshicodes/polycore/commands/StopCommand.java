@@ -16,7 +16,7 @@ public class StopCommand extends Command {
     public boolean execute(CommandSender sender, String[] args) {
         if(!sender.isAdmin()) return false;
         sender.sendMessage(ChatColor.RED + "Shutting down...");
-        PolyCore.getInstance().stop();
+        System.exit(0);
         return true;
     }
 

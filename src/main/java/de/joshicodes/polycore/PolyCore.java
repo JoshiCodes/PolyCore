@@ -40,6 +40,8 @@ public class PolyCore {
     PolyCore() throws IOException {
         instance = this;
 
+        Runtime.getRuntime().addShutdownHook(new Thread(this::stop, "ShutdownHook"));
+
         config = YamlDocument.create(
                 new File("config.yml"),
                 Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("config.yml")),
@@ -126,12 +128,21 @@ public class PolyCore {
     }
 
     public void stop() {
+
+        consoleSender.sendMessage(ChatColor.YELLOW + "Shutting down plugins...");
+        pluginManager.disablePlugins();
+        consoleSender.sendMessage(ChatColor.YELLOW + "Done!");
+
         server.stop();
         consoleSender.sendMessage(ChatColor.RED + "Web-Server stopped.");
-        commandThread.interrupt();
-        consoleSender.sendMessage(ChatColor.RED + "Command-Thread stopped.");
+
+        if(commandThread != null && commandThread.isAlive()) {
+            commandThread.interrupt();
+            consoleSender.sendMessage(ChatColor.RED + "Command-Thread stopped.");
+        }
+
         consoleSender.sendMessage(ChatColor.RED + "Shutting down PolyCore...");
-        System.exit(0);
+
     }
 
     public ConsoleSender getConsoleSender() {

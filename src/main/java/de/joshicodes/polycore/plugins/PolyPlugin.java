@@ -11,6 +11,7 @@ import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLClassLoader;
 import java.util.Objects;
 
 public abstract class PolyPlugin {
@@ -19,14 +20,16 @@ public abstract class PolyPlugin {
     private String name;
     private String version;
     private File folder;
+    private URLClassLoader loader;
 
     private YamlDocument config;
 
-    void init(final PolyCore core, final PluginData data) {
+    void init(final PolyCore core, final PluginData data, final URLClassLoader loader) {
         this.core = Objects.requireNonNull(core, "core must not be null");
         Objects.requireNonNull(data, "PluginData must not be null");
         String pluginName = Objects.requireNonNull(data.name(), "Plugin name must not be null").trim();
         String pluginVersion = Objects.requireNonNull(data.version(), "Plugin version must not be null").trim();
+        this.loader = Objects.requireNonNull(loader, "loader must not be null");
         if (pluginName.isEmpty()) {
             throw new IllegalArgumentException("Plugin name must not be empty");
         }
@@ -62,7 +65,7 @@ public abstract class PolyPlugin {
     }
 
     public void saveDefaults() throws IOException {
-        try (final InputStream stream = getClass().getClassLoader().getResourceAsStream("config.yml")) {
+        try (final InputStream stream = loader.getResourceAsStream("config.yml")) {
             if (stream == null) return;
             try {
                 folder.mkdir();
